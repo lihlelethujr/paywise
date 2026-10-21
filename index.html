@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A5BFF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PayWise">
+<title>PayWise</title>
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap">
+<style>
+:root{--bg:#F8F9FA;--sf:#fff;--ink:#202124;--mute:#5F6368;--blue:#1A73E8;--tonal:#E8F0FE;--tink:#1967D2;--ok:#188038;--line:#DADCE0;--onb:#fff;color-scheme:light;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:"Google Sans","Product Sans",Roboto,system-ui,sans-serif}
+#app{max-width:480px;height:100%;margin:0 auto;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.pad{padding:56px 24px;overflow-y:auto}
+.logo{width:72px;height:72px;border-radius:20px;background:var(--blue);color:var(--onb);font-size:46px;font-weight:500;display:flex;align-items:center;justify-content:center}
+h1{font-size:26px;font-weight:500;margin:20px 0 6px}
+h2{font-size:16px;font-weight:500;color:var(--mute);margin:20px 4px 10px}
+.note{color:var(--mute);font-size:14px;margin:8px 4px}
+.err{color:#D93025;margin:12px 4px}
+header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px 8px}
+.title{font-size:22px;font-weight:500}
+.back{border:0;background:none;color:var(--blue);font:500 18px inherit;font-family:inherit}
+.avb{border:0;background:none;padding:0;cursor:pointer}
+.av{width:38px;height:38px;border-radius:50%;background:var(--blue);color:var(--onb);display:flex;align-items:center;justify-content:center;font-weight:500;object-fit:cover}
+.avxl{width:110px;height:110px;font-size:44px}
+main{flex:1;overflow-y:auto;padding:4px 16px 16px}
+nav{display:flex;gap:4px;padding:8px}
+nav button{flex:1;padding:12px 0;border:0;border-radius:16px;background:none;color:var(--mute);font:500 12.5px inherit;font-family:inherit}
+nav button.on{background:var(--tonal);color:var(--tink)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.btn{display:block;width:100%;border:0;border-radius:100px;padding:14px;font:500 15px inherit;font-family:inherit;background:var(--blue);color:var(--onb);margin-top:10px;cursor:pointer}
+.btn.t{background:var(--tonal);color:var(--tink)}.btn.g{background:none;color:var(--blue)}
+input{width:100%;padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--sf);color:var(--ink);font:400 16px inherit;font-family:inherit;margin-bottom:10px}
+.card{border-radius:20px;padding:18px;margin-bottom:12px;background:var(--sf);border:1px solid var(--line)}
+.card strong{font-size:18px;font-weight:500}.card small{display:block;color:var(--mute);margin-top:6px;letter-spacing:1px}
+.card.bank{background:var(--blue);color:var(--onb);border:0;min-height:130px;display:flex;flex-direction:column;justify-content:space-between}.card.bank small{color:var(--onb);opacity:.85}
+.wc{border-radius:28px;padding:22px;min-height:190px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;margin-bottom:12px;box-shadow:0 6px 16px rgba(32,33,36,.18);cursor:pointer}
+.wc.sm{min-height:130px;padding:18px}
+.wc b{font-size:26px;font-weight:500;text-align:center;line-height:1.15}
+.wl{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-weight:500}
+.wn{font-size:19px;letter-spacing:1px}
+.dots{display:flex;justify-content:center;gap:8px;margin:12px 0}.dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}.dots i.on{width:22px;border-radius:8px;background:var(--ink)}
+.bcp{background:#fff;border-radius:24px;padding:20px 24px;margin:16px 12px 8px;text-align:center}.bcp svg{width:100%;height:90px}
+.num{text-align:center;font-size:20px;letter-spacing:1px;margin:8px 0 16px}
+.tag{color:var(--ok);font-size:12px;margin-top:8px;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{border:1px solid var(--line);background:none;color:var(--ink);border-radius:100px;padding:8px 14px;font:400 14px inherit;font-family:inherit}
+.chip.on{background:var(--tonal);border-color:var(--blue);color:var(--tink)}
+.row{display:flex;justify-content:space-between;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line)}
+.cam{aspect-ratio:1;border-radius:28px;background:#202124;overflow:hidden;position:relative}
+.cam video{width:100%;height:100%;object-fit:cover}
+.cam::after{content:"";position:absolute;inset:19%;border:3px solid #fff;border-radius:24px}
+.qr{background:#fff;padding:14px;border-radius:24px;display:flex;justify-content:center;margin:12px 0;border:1px solid var(--line)}
+.sheet{position:absolute;inset:auto 0 0 0;background:var(--sf);border-radius:28px 28px 0 0;padding:24px;box-shadow:0 -4px 24px rgba(0,0,0,.3);z-index:5}
+.big{font-size:44px;margin:8px 0}
+.toast{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:12px;z-index:9}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.6/JsBarcode.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js"></script>
+<script>
+var $=function(i){return document.getElementById(i)};
+var S={user:null,cards:[],hist:[],payout:null},tab='wallet',scr='main',step='phone',tmp={},stream=null,raf=0,sel='';
+var STORES=['Shoprite Xtra Savings','Pick n Pay Smart Shopper','Checkers Xtra Savings','Clicks ClubCard','Woolworths WRewards','Spar Rewards'];
+var BANKS=['Capitec','FNB','Standard Bank','Absa','Nedbank','TymeBank'];
+try{var d=JSON.parse(localStorage.getItem('pw'));if(d&&d.user)S=d}catch(e){}
+function save(){try{localStorage.setItem('pw',JSON.stringify(S))}catch(e){}}
+function esc(t){return String(t).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function money(a){return 'R'+Number(a).toFixed(2)}
+function toast(m){var t=document.createElement('div');t.className='toast';t.textContent=m;$('app').appendChild(t);setTimeout(function(){t.remove()},2500)}
+function normPhone(p){p=p.replace(/\s/g,'');if(/^0\d{9}$/.test(p))return '+27'+p.slice(1);return /^\+27\d{9}$/.test(p)?p:null}
+function validId(id){if(!/^\d{13}$/.test(id))return false;var mm=+id.slice(2,4),dd=+id.slice(4,6);if(mm<1||mm>12||dd<1||dd>31)return false;var s=0;for(var i=0;i<13;i++){var x=+id[12-i];if(i%2){x*=2;if(x>9)x-=9}s+=x}return s%10===0}
+function parseTLV(s){var o={},i=0;while(i+4<=s.length){var l=parseInt(s.slice(i+2,i+4),10);if(isNaN(l))break;o[s.slice(i,i+2)]=s.slice(i+4,i+4+l);i+=4+l}return o}
+function crc16(s){var c=0xffff;for(var i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(var j=0;j<8;j++)c=c&0x8000?(c<<1)^0x1021:c<<1;c&=0xffff}return c.toString(16).toUpperCase().padStart(4,'0')}
+function f(t,v){return t+String(v.length).padStart(2,'0')+v}
+function buildQR(name,amt,id){var p=f('00','01')+f('01',amt?'12':'11')+f('26',f('00','za.co.paywise')+f('01',id))+f('52','5411')+f('53','710');if(amt)p+=f('54',Number(amt).toFixed(2));p+=f('58','ZA')+f('59',name.slice(0,25))+f('60','ZA')+'6304';return p+crc16(p)}
+function readQR(d){if(d.indexOf('000201')!==0||crc16(d.slice(0,-4))!==d.slice(-4))return null;var t=parseTLV(d);return{name:t['59']||'Merchant',amount:t['54']?parseFloat(t['54']):null}}
+function err(m){var e=$('err');if(e)e.textContent=m}
+
+function render(){stopCam();S.user?shell():auth()}
+function auth(){
+ var b='<div class="pad"><div class="logo">P</div>';
+ if(step==='phone')b+='<h1>Welcome to PayWise</h1><p class="note">Enter your cell number to sign up or log in.</p><input id="ph" type="tel" placeholder="082 123 4567"><button class="btn" onclick="doPhone()">Continue</button>';
+ if(step==='otp')b+='<h1>Enter your code</h1><p class="note">We sent a 6-digit code to '+esc(tmp.phone)+'. Demo code: 123456</p><input id="cd" inputmode="numeric" maxlength="6" placeholder="123456"><button class="btn" onclick="doOtp()">Verify</button><button class="btn g" onclick="step=\'phone\';render()">Use a different number</button>';
+ if(step==='reg')b+='<h1>Finish your profile</h1><input id="nm" placeholder="Name"><input id="sn" placeholder="Surname"><input id="id" inputmode="numeric" maxlength="13" placeholder="ID number (13 digits)"><input id="em" type="email" placeholder="Email address"><p class="note">Demo: your full ID number is checked, then only a masked version is kept on this phone.</p><button class="btn" onclick="doReg()">Create account</button>';
+ $('app').innerHTML=b+'<p class="err" id="err"></p></div>';
+}
+function doPhone(){var p=normPhone($('ph').value);if(!p)return err('Enter a valid South African number');tmp.phone=p;step='otp';render()}
+function doOtp(){if($('cd').value!=='123456')return err('That code is wrong');step='reg';render()}
+function doReg(){
+ var n=$('nm').value.trim(),s=$('sn').value.trim(),id=$('id').value.trim(),e=$('em').value.trim();
+ if(!n||!s)return err('Enter your name and surname');
+ if(!validId(id))return err('That ID number is not valid');
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e))return err('Enter a valid email address');
+ var l=tmp.phone.slice(-4);
+ S={user:{name:n,surname:s,email:e,phone:tmp.phone,idm:id.slice(0,6)+'*******'},cards:[{store:STORES[0],num:'6009 '+l+' 0001',auto:1},{store:STORES[1],num:'9810 '+l+' 0002',auto:1}],hist:[],payout:null};
+ save();tab='wallet';render();
+}
+function shell(){
+ var u=S.user,av=u.photo?'<img class="av" src="'+u.photo+'" alt="">':'<span class="av">'+esc(u.name[0].toUpperCase())+'</span>';
+ var top=scr!=='main'?'<button class="back" onclick="scr=\'main\';render()">‹ Back</button>':'<b class="title">PayWise</b><button class="avb" onclick="scr=\'profile\';render()" aria-label="Profile">'+av+'</button>';
+ var nv='';if(scr==='main')nv='<nav>'+[['wallet','Wallet'],['scan','Scan'],['tap','Tap'],['buy','Transact'],['paid','Get paid']].map(function(t){return '<button class="'+(t[0]===tab?'on':'')+'" onclick="go(\''+t[0]+'\')">'+t[1]+'</button>'}).join('')+'</nav>';
+ $('app').innerHTML='<header>'+top+'</header><main id="body"></main>'+nv;
+ if(scr==='profile')return profile();if(scr==='card')return cardView();if(scr==='add')return addScreen();if(scr==='bank')return bankScreen();if(scr==='tx')return (txk==='data'?dataScreen():txScreen());if(scr==='lotto')return lottoScreen();
+ ({wallet:wallet,scan:scan,tap:tap,buy:buy,paid:paid})[tab]();
+}
+function go(t){tab=t;render()}
+function chips(list,fn){return '<div class="chips">'+list.map(function(i){return '<button class="chip'+(sel===i?' on':'')+'" onclick="'+fn+'(this.textContent)">'+esc(i)+'</button>'}).join('')+'</div>'}
+function wallet(){
+ var bk=S.payout?'<div class="card bank"><strong>'+esc(S.payout.bank)+'</strong><small>•••• '+esc(S.payout.l4)+' · Payout account</small></div>':'<div class="card bank" onclick="go(\'paid\')" style="cursor:pointer"><strong>Link your bank account</strong><small>Get paid straight to your account</small></div>';var b='<h2>Bank cards</h2>'+bk+'<h2>Loyalty cards</h2>'+(S.cards.length?S.cards.map(function(c,i){return cardHTML(c,i,1)}).join(''):'<p class="note">No loyalty cards yet.</p>');
+ b+='<button class="btn t" onclick="openAdd()">+ Add loyalty card</button><h2>Recent activity</h2>';
+ b+=S.hist.length?S.hist.map(function(h){return '<div class="row"><span>'+(h.in?'From ':'To ')+esc(h.who)+'</span><b style="color:'+(h.in?'var(--ok)':'inherit')+'">'+(h.in?'+':'-')+money(h.a)+'</b></div>'}).join(''):'<p class="note">No payments yet.</p>';
+ $('body').innerHTML=b;
+}
+function pickStore(v){sel=v;showAdd()}
+function showAdd(){var keep=$('cn')?$('cn').value:'';$('addbox').innerHTML='<div class="card">'+chips(STORES,'pickStore')+'<input id="cn" inputmode="numeric" placeholder="Card number" value="'+esc(keep)+'"><button class="btn" onclick="addCard()">Save card</button></div>'}
+function addCard(){var n=$('cn').value.trim();if(!sel||!n)return toast('Pick a store and enter the number');S.cards.push({store:sel,num:n});sel='';save();render()}
+var COL={'Shoprite':'#C62828','Pick n Pay':'#1565C0','Checkers':'#00838F','Clicks':'#2E7D32','Woolworths':'#202124','Spar':'#6A1B9A'},idx=0,draft={store:'',num:''},bdet=null,zr=null;
+function colFor(s){for(var k in COL)if(s.indexOf(k)===0)return COL[k];return '#5F6368'}
+function cardHTML(c,i,sm){return '<div class="wc'+(sm?' sm':'')+'" style="background:'+colFor(c.store)+'"'+(sm?' onclick="openCard('+i+')"':'')+'><span class="wl">'+esc(c.store[0])+'</span><b>'+esc(c.store)+'</b><span class="wn">'+esc(c.num)+'</span></div>'}
+function drawBc(q,n){try{JsBarcode(q,String(n).replace(/\s/g,''),{format:'CODE128',displayValue:false,height:80,margin:0,width:2})}catch(e){}}
+function openCard(i){idx=i;scr='card';render()}
+function cardView(){
+ var c=S.cards[idx];if(!c){scr='main';return render()}
+ $('body').innerHTML='<div id="sw">'+cardHTML(c)+'</div><div class="dots">'+S.cards.map(function(x,i){return '<i class="'+(i===idx?'on':'')+'"></i>'}).join('')+'</div><div class="bcp"><svg id="bc"></svg></div><p class="num">'+esc(c.num)+'</p><p class="note" style="text-align:center">Hold this up to the checkout scanner. Swipe to see your other cards.</p><button class="btn g" onclick="delCard()">Remove card</button>';
+ drawBc('#bc',c.num);
+ var x0=0,sw=$('sw');sw.ontouchstart=function(e){x0=e.touches[0].clientX};sw.ontouchend=function(e){var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50){idx=(idx+(dx<0?1:S.cards.length-1))%S.cards.length;render()}};
+}
+function delCard(){S.cards.splice(idx,1);save();scr='main';render()}
+function openAdd(){draft={store:'',num:''};sel='';scr='add';render()}
+function pickStore2(v){draft.store=v;sel=v;addScreen()}
+function addScreen(){
+ $('body').innerHTML='<h2>Store</h2>'+chips(STORES,'pickStore2')+'<h2>Card number</h2><input id="cn" inputmode="numeric" placeholder="Type the card number" oninput="draft.num=this.value;prev()" value="'+esc(draft.num)+'"><button class="btn t" onclick="scanCard()">Scan the card’s barcode</button><div id="scanbox"></div><div id="prev" style="margin-top:16px"></div><button class="btn" onclick="saveCard()">Save card</button>';
+ prev();
+}
+function prev(){var p=$('prev');if(!p)return;var n=draft.num.trim();if(!draft.store&&!n){p.innerHTML='';return}p.innerHTML=cardHTML({store:draft.store||'Choose a store',num:n||'Card number'})+(n?'<div class="bcp"><svg id="bc2"></svg></div>':'');if(n)drawBc('#bc2',n)}
+function saveCard(){var n=draft.num.trim();if(!draft.store||!n)return toast('Pick a store and add the card number');S.cards.push({store:draft.store,num:n});save();scr='main';tab='wallet';sel='';render();toast('Card added')}
+function scanCard(){
+ $('scanbox').innerHTML='<div class="cam" style="margin-top:10px"><video id="vid" playsinline muted></video></div><p class="note" id="camerr">Hold the barcode inside the frame.</p>';
+ if(!navigator.mediaDevices)return err2('Camera is not available here. Type the number instead.');
+ navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(function(s){stream=s;var v=$('vid');if(!v){stopCam();return}v.srcObject=s;v.play();bloop()}).catch(function(){err2('Camera is blocked. Allow it, or type the number.')});
+}
+function bloop(){
+ var v=$('vid');if(!v||!stream)return;
+ var next=function(){raf=setTimeout(bloop,150)};
+ if(!(v.readyState===4&&v.videoWidth))return next();
+ var got=function(t){stopCam();draft.num=t;var i=$('cn');if(i)i.value=t;var b=$('scanbox');if(b)b.innerHTML='';prev();toast('Barcode read')};
+ if('BarcodeDetector' in window){bdet=bdet||new BarcodeDetector();bdet.detect(v).then(function(r){r.length?got(r[0].rawValue):next()}).catch(next);return}
+ try{var c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);zr=zr||new ZXing.MultiFormatReader();got(zr.decode(new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(new ZXing.HTMLCanvasElementLuminanceSource(c)))).getText())}catch(e){next()}
+}
+function pay(who,a,inn){S.hist.unshift({who:who,a:a,in:inn});save();tab='wallet';render();toast((inn?'Received ':'Paid ')+money(a))}
+function scan(){
+ $('body').innerHTML='<h2>Scan to pay</h2><div class="cam"><video id="vid" playsinline muted></video></div><p class="note" id="camerr">Point the camera at a payment QR code.</p><button class="btn t" onclick="demoScan()">Try a demo QR (tap again for another type)</button>';
+ if(!navigator.mediaDevices||!window.jsQR){return err2('Camera scanning is not available here.')}
+ navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(function(s){stream=s;var v=$('vid');if(!v){stopCam();return}v.srcObject=s;v.play();loop()}).catch(function(){err2('Camera is blocked. Allow camera access in your browser, or use the demo button.')});
+}
+function err2(m){var e=$('camerr');if(e)e.textContent=m}
+function loop(){var v=$('vid');if(!v||!stream)return;if(v.readyState===4&&v.videoWidth){var c=document.createElement('canvas');c.width=v.videoWidth/2;c.height=v.videoHeight/2;var x=c.getContext('2d');x.drawImage(v,0,0,c.width,c.height);var im=x.getImageData(0,0,c.width,c.height),r=jsQR(im.data,c.width,c.height);if(r&&r.data){var m=readQR(r.data);if(m){stopCam();return confirmPay(m)}}}raf=requestAnimationFrame(loop)}
+function stopCam(){if(stream){stream.getTracks().forEach(function(t){t.stop()});stream=null}cancelAnimationFrame(raf);clearTimeout(raf)}
+function demoScan(){stopCam();confirmPay({name:'Mama Thandi Vetkoek',amount:35})}
+function confirmPay(m){
+ var sh=document.createElement('div');sh.className='sheet';sh.id='sheet';
+ sh.innerHTML='<p class="note">Paying</p><strong style="font-size:22px">'+esc(m.name)+'</strong>'+(m.amount?'<div class="big">'+money(m.amount)+'</div>':'<input id="pa" inputmode="decimal" placeholder="Amount (R)" style="margin-top:12px">')+'<button class="btn" id="pb">Pay</button><button class="btn g" id="pc">Cancel</button>';
+ $('app').appendChild(sh);
+ $('pb').onclick=function(){var a=m.amount||parseFloat($('pa').value);if(!(a>0))return toast('Enter an amount');sh.remove();pay(m.name,a,false)};
+ $('pc').onclick=function(){sh.remove();render()};
+}
+function tap(){
+ $('body').innerHTML='<div style="text-align:center;padding:40px 12px"><div class="logo" style="margin:0 auto;width:96px;height:96px;font-size:60px">P</div><h1>Tap to pay</h1><p class="note">Paying with a tap needs the installed PayWise Android app, because websites can’t make your phone act like a card. Scan works right now.</p><button class="btn" onclick="go(\'scan\')">Scan to pay instead</button></div>';
+}
+function paid(){
+ var b=$('body');
+ if(!S.payout){b.innerHTML='<h2>Where should your money go?</h2><p class="note">PayWise never holds your money. Payments go straight to the account you link.</p>'+chips(BANKS,'pickBank')+'<input id="ac" inputmode="numeric" placeholder="Account number"><button class="btn" onclick="linkBank()">Link account</button>';return}
+ var u=S.user;
+ b.innerHTML='<p class="note">Paid straight to '+esc(S.payout.bank)+' •••• '+esc(S.payout.l4)+'</p><input id="am" inputmode="decimal" placeholder="Amount (optional)"><div class="qr" id="qr"></div><button class="btn t" onclick="readTap()">Receive a tap</button><p class="note" id="nfcmsg">Customers scan the code, or tap with the PayWise Android app.</p>';
+ var q=new QRCode($('qr'),{text:'x',width:200,height:200});
+ function upd(){q.makeCode(buildQR(u.name+' '+u.surname,$('am').value,u.phone))}
+ $('am').oninput=upd;upd();
+}
+function pickBank(v){sel=v;paid();$('body').querySelectorAll('.chip').forEach(function(c){if(c.textContent===v)c.className='chip on'})}
+function linkBank(){var a=$('ac').value.trim();if(!sel||a.length<8)return toast('Pick a bank and enter the account number');S.payout={bank:sel,l4:a.slice(-4)};sel='';save();render()}
+function readTap(){
+ if(!('NDEFReader' in window))return $('nfcmsg').textContent='Receiving taps needs Chrome on an NFC Android phone.';
+ var a=parseFloat($('am').value);if(!(a>0))return $('nfcmsg').textContent='Enter an amount first, then tap.';
+ try{var r=new NDEFReader();r.scan().then(function(){$('nfcmsg').textContent='Ready. Hold the customer’s phone near yours…';r.onreading=function(){pay('Customer (tap)',a,true)}}).catch(function(){$('nfcmsg').textContent='NFC is off or blocked.'})}catch(e){$('nfcmsg').textContent='NFC is not available here.'}
+}
+function profile(){
+ var u=S.user,av=u.photo?'<img class="av avxl" src="'+u.photo+'" alt="Profile photo">':'<span class="av avxl">'+esc(u.name[0].toUpperCase())+'</span>';
+ var rows=[['Name',u.name+' '+u.surname],['Cell number',u.phone],['Email',u.email],['ID number',u.idm],['Payout account',S.payout?S.payout.bank+' •••• '+S.payout.l4:'Not linked']];
+ $('body').innerHTML='<div style="display:flex;flex-direction:column;align-items:center"><label style="cursor:pointer">'+av+'<input id="ph" type="file" accept="image/*" style="display:none" onchange="setPhoto(this)"></label><p class="note">Tap the photo to change it</p></div>'+rows.map(function(r){return '<div class="row"><span style="color:var(--mute)">'+r[0]+'</span><span>'+esc(r[1])+'</span></div>'}).join('')+'<button class="btn t" onclick="signOut()">Sign out</button>';
+}
+function setPhoto(inp){var fl=inp.files[0];if(!fl)return;var rd=new FileReader();rd.onload=function(){var im=new Image();im.onload=function(){var c=document.createElement('canvas');c.width=c.height=160;var s=Math.min(im.width,im.height);c.getContext('2d').drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,160,160);S.user.photo=c.toDataURL('image/jpeg',.7);save();render()};im.src=rd.result};rd.readAsDataURL(fl)}
+function signOut(){try{localStorage.removeItem('pw')}catch(e){}S={user:null,cards:[],hist:[],payout:null};scr='main';tab='wallet';step='phone';render()}
+var bstep='pick',bk2='';
+function openBank(){bstep='pick';sel='';scr='bank';render()}
+function pickB(v){sel=v;bankScreen()}
+function bankNext(){if(!sel)return toast('Choose your bank');bk2=sel;bstep='login';bankScreen()}
+function bLogin(){bstep='approve';bankScreen();setTimeout(bankDone,2200)}
+function bankDone(){if(scr!=='bank')return;S.bank={name:bk2,l4:'4821'};save();scr='main';tab='wallet';render();toast('Bank linked')}
+function bankScreen(){
+ var b=$('body');
+ if(bstep==='pick'){b.innerHTML='<h2>Link your bank account</h2><p class="note">You do this once. After that, scanning or tapping and confirming in PayWise is all it takes. PayWise never holds your money.</p>'+chips(BANKS,'pickB')+'<button class="btn" onclick="bankNext()">Continue</button>';return}
+ if(bstep==='login'){b.innerHTML='<h2>'+esc(bk2)+' secure login</h2><div class="card"><p class="note">Prototype: your bank’s own login page opens here, and PayWise never sees your password.</p><input placeholder="Banking username" disabled><input type="password" placeholder="Password" disabled><button class="btn" onclick="bLogin()">Log in</button></div>';return}
+ b.innerHTML='<div style="text-align:center;padding:56px 12px"><h1>Approve in your banking app</h1><p class="note">Waiting for your approval…</p></div>';
+}
+function wallet(){
+ var bk=S.bank?'<div class="card bank" onclick="openBank()" style="cursor:pointer"><strong>'+esc(S.bank.name)+'</strong><small>•••• '+esc(S.bank.l4)+' · Linked. Pays with one tap</small></div>':'<div class="card bank" onclick="openBank()" style="cursor:pointer"><strong>Link your bank card</strong><small>Add your card once, then pay with one tap</small></div>';
+ $('body').innerHTML='<h2>Bank cards</h2>'+bk+'<h2>Loyalty cards</h2>'+(S.cards.length?S.cards.map(function(c,i){return cardHTML(c,i,1)}).join(''):'<p class="note">No loyalty cards yet.</p>')+'<button class="btn t" onclick="openAdd()">+ Add loyalty card</button><h2>Recent activity</h2>'+(S.hist.length?S.hist.map(function(h){return '<div class="row"><span>'+(h.in?'From ':'To ')+esc(h.who)+'</span><b style="color:'+(h.in?'var(--ok)':'inherit')+'">'+(h.in?'+':'-')+money(h.a)+'</b></div>'}).join(''):'<p class="note">No payments yet.</p>');
+}
+function confirmPay(m){
+ if(!S.bank){toast('Link your bank account first');return openBank()}
+ var sh=document.createElement('div');sh.className='sheet';
+ sh.innerHTML='<p class="note">Paying</p><strong style="font-size:22px">'+esc(m.name)+'</strong>'+(m.amount?'<div class="big">'+money(m.amount)+'</div>':'<input id="pa" inputmode="decimal" placeholder="Amount (R)" style="margin-top:12px">')+'<p class="note">From '+esc(S.bank.name)+' •••• '+esc(S.bank.l4)+(m.via?' · '+m.via:'')+'</p><button class="btn" id="pb">Pay with one tap</button><button class="btn g" id="pc">Cancel</button>';
+ $('app').appendChild(sh);
+ $('pb').onclick=function(){var a=m.amount||parseFloat($('pa').value);if(!(a>0))return toast('Enter an amount');sh.innerHTML='<div class="ok" style="font-size:22px;margin:16px 0">✓ Paid '+money(a)+'</div><p class="note">Sent straight from your bank to '+esc(m.name)+'.</p><button class="btn" id="pd">Done</button>';$('pd').onclick=function(){sh.remove();pay(m.name,a,false)}};
+ $('pc').onclick=function(){sh.remove();render()};
+}
+function simTap(){confirmPay({name:'Spaza Express',amount:62.5,via:'Tap'})}
+function tap(){
+ $('body').innerHTML='<div style="text-align:center;padding:24px 12px"><div class="logo" style="margin:0 auto;width:110px;height:110px;font-size:46px">)))</div><h1>Tap to pay</h1><p class="note">Hold your phone near the shop’s reader. Prototype: this simulates the tap. The real tap needs the installed Android app.</p><button class="btn" onclick="simTap()">Simulate tapping a reader</button></div>';
+}
+function paid(){
+ var b=$('body'),u=S.user;
+ if(!S.payout){b.innerHTML='<h2>Where should your money go?</h2><p class="note">PayWise never holds your money. Payments go straight to the account you link.</p>'+chips(BANKS,'pickBank')+'<input id="ac" inputmode="numeric" placeholder="Account number"><button class="btn" onclick="linkBank()">Link account</button>';return}
+ b.innerHTML='<p class="note">Paid straight to '+esc(S.payout.bank)+' •••• '+esc(S.payout.l4)+'</p><input id="am" inputmode="decimal" placeholder="Amount (optional)"><div class="qr" id="qr"></div><button class="btn t" onclick="simIn()">Simulate a QR payment</button><button class="btn t" onclick="simTapIn()">Simulate a card or phone tap</button><p class="note">Example fee: PayWise keeps 1% (minimum R0.50) of each payment you receive. Customers pay no fee.</p>';
+ var q=new QRCode($('qr'),{text:'x',width:200,height:200});
+ function upd(){q.makeCode(buildQR(u.name+' '+u.surname,$('am').value,u.phone))}
+ $('am').oninput=upd;upd();
+}
+function simIn(){var a=parseFloat($('am').value)||35,fee=Math.round(Math.max(0.5,a*0.01)*100)/100,net=a-fee;S.hist.unshift({who:'Customer (R'+a.toFixed(2)+' less R'+fee.toFixed(2)+' fee)',a:net,in:true});save();tab='wallet';render();toast('Received '+money(net)+' in your bank')}
+var TX={airtime:{t:'Airtime',opts:['Vodacom','MTN','Telkom','Cell C'],f:'Cell number',amts:[5,10,20,50]},data:{t:'Data',opts:['Vodacom','MTN','Telkom','Cell C'],f:'Cell number',amts:[29,59,99,199]},power:{t:'Prepaid electricity',opts:['Eskom','City Power','Municipal'],f:'Meter number',amts:[20,50,100,200]},bills:{t:'Pay a bill',opts:['DStv','Municipal rates','Telkom','Insurance'],f:'Account number',amts:[100,250,500,1000]}};
+var TXK=['airtime','data','power','bills'],txk='',txo='',txa=0,txr='',tmpCard=null;
+function luhn(n){var s=0,d=false;for(var i=n.length-1;i>=0;i--){var x=+n[i];if(d){x*=2;if(x>9)x-=9}s+=x;d=!d}return s%10===0}
+function fmtCard(el){el.value=el.value.replace(/\D/g,'').slice(0,16).replace(/(.{4})/g,'$1 ').trim()}
+function fmtExp(el){var v=el.value.replace(/\D/g,'').slice(0,4);if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2);el.value=v}
+function bankScreen(){
+ var b=$('body');
+ if(bstep==='verify'){b.innerHTML='<h2>Verify your card</h2><p class="note">Your bank sends a one-time code to your phone to confirm this card is yours. Demo code: 123456</p><input id="cvc" inputmode="numeric" maxlength="6" placeholder="Code"><button class="btn" onclick="cardVerify()">Verify and link</button><p class="err" id="err"></p>';return}
+ b.innerHTML='<h2>Link a bank card</h2><p class="note">Add your debit or credit card once. After that, one tap pays. PayWise never keeps your full card number or secret number.</p><input id="cnum" inputmode="numeric" placeholder="Card number" maxlength="19" oninput="fmtCard(this)" autocomplete="off"><div style="display:flex;gap:10px"><input id="cexp" inputmode="numeric" placeholder="MM/YY" maxlength="5" oninput="fmtExp(this)" autocomplete="off"><input id="ccvv" type="password" inputmode="numeric" placeholder="3-digit secret number" maxlength="3" autocomplete="off"></div><input id="cname" placeholder="Name on card"><p class="note">Demo only: please do NOT enter a real card. Use the test card 4111 1111 1111 1111, any future date and any 3 digits.</p><button class="btn" onclick="cardNext()">Continue</button><p class="err" id="err"></p>';
+}
+function cardNext(){
+ var n=$('cnum').value.replace(/\D/g,''),e=$('cexp').value,c=$('ccvv').value,nm=$('cname').value.trim();
+ if(n.length<13||!luhn(n))return err('Check your card number');
+ var m=/^(\d\d)\/(\d\d)$/.exec(e),now=new Date(),yy=m?2000+(+m[2]):0;
+ if(!m||+m[1]<1||+m[1]>12||yy<now.getFullYear()||(yy===now.getFullYear()&&+m[1]<now.getMonth()+1))return err('Check the expiry date');
+ if(!/^\d{3}$/.test(c))return err('Enter the 3-digit secret number on the back');
+ if(!nm)return err('Enter the name on the card');
+ tmpCard={brand:n[0]==='4'?'Visa':(n[0]==='5'||n[0]==='2')?'Mastercard':'Card',l4:n.slice(-4),holder:nm};
+ n=c=e='';bstep='verify';bankScreen();
+}
+function cardVerify(){
+ if($('cvc').value!=='123456')return err('That code is wrong');
+ S.bank={name:tmpCard.brand,l4:tmpCard.l4,holder:tmpCard.holder};tmpCard=null;save();scr='main';tab='wallet';render();toast('Card linked');
+}
+function pay(who,a,inn){S.hist.unshift({who:who,a:a,in:inn});save();scr='main';tab='wallet';render();toast((inn?'Received ':'Paid ')+money(a))}
+function buy(){
+ var T=[['Airtime','Top up any network'],['Data','Data bundles for any network'],['Prepaid electricity','Buy units for your meter'],['Pay a bill','DStv, municipal and more']];
+ $('body').innerHTML='<h2>Transact</h2>'+T.map(function(t,i){return '<div class="card" style="display:flex;gap:14px;align-items:center;cursor:pointer" onclick="openTx('+i+')"><span class="wl" style="background:var(--tonal);color:var(--tink)">'+t[0][0]+'</span><span><strong style="font-size:17px">'+t[0]+'</strong><small style="letter-spacing:0">'+t[1]+'</small></span></div>'}).join('')+'<p class="note">Pay for everyday things straight from your linked card.</p>';
+}
+function openTx(i){txk=TXK[i];txo='';txa=0;txr='';scr='tx';render()}
+function txPick(v){txo=v;txScreen()}
+function txSet(a){txa=a;txScreen()}
+function txScreen(){
+ var c=TX[txk];
+ $('body').innerHTML='<h2>'+c.t+'</h2><div class="chips">'+c.opts.map(function(o){return '<button class="chip'+(txo===o?' on':'')+'" onclick="txPick(this.textContent)">'+esc(o)+'</button>'}).join('')+'</div><input id="txf" inputmode="numeric" placeholder="'+c.f+'" value="'+esc(txr)+'" oninput="txr=this.value"><div class="chips">'+c.amts.map(function(a){return '<button class="chip'+(txa===a?' on':'')+'" onclick="txSet('+a+')">R'+a+'</button>'}).join('')+'</div><button class="btn" onclick="txBuy()">Buy</button><p class="note">PayWise earns a small commission from the provider. You pay the price shown.</p>';
+}
+function txBuy(){var c=TX[txk];if(!txo||!txr.trim()||!txa)return toast('Choose a provider, add the '+c.f.toLowerCase()+' and an amount');confirmPay({name:txo+' '+c.t.toLowerCase(),amount:txa,via:'Transact'})}
+function txScreen(){
+ var c=TX[txk];
+ $('body').innerHTML='<h2>'+c.t+'</h2><div class="chips">'+c.opts.map(function(o){return '<button class="chip'+(txo===o?' on':'')+'" onclick="txPick(this.textContent)">'+esc(o)+'</button>'}).join('')+'</div><input id="txf" inputmode="numeric" placeholder="'+c.f+'" value="'+esc(txr)+'" oninput="txr=this.value"><h2>Amount</h2><input id="txam" inputmode="decimal" placeholder="Type an amount in rand" value="'+(txa||'')+'" oninput="txa=parseFloat(this.value)||0"><p class="note">Or pick a quick amount:</p><div class="chips">'+c.amts.map(function(a){return '<button class="chip'+(txa===a?' on':'')+'" onclick="txSet('+a+')">R'+a+'</button>'}).join('')+'</div><button class="btn" onclick="txBuy()">Buy</button><p class="note">PayWise earns a small commission from the provider. You pay the price shown.</p>';
+}
+function txBuy(){var c=TX[txk];if(!txo||!txr.trim()||!(txa>=1))return toast('Choose a provider, add the '+c.f.toLowerCase()+' and type or pick an amount');confirmPay({name:txo+' '+c.t.toLowerCase(),amount:Math.round(txa*100)/100,via:'Transact'})}
+TX.bills.f='Reference number';TX.bills.h='Use the reference on your bill. For DStv, this is your DStv account number.';
+TX.payat={t:'Pay@',opts:[],f:'Pay@ reference number',amts:[100,250,500,1000],h:'Use the Pay@ reference number printed next to the Pay@ logo on your invoice. It usually starts with 9.'};
+TXK=['airtime','data','power','bills','payat','lotto'];
+var lg='Lotto',nb=1,boards=[];
+var LG={'Lotto':[6,52,0],'Lotto Plus 1':[6,52,0],'Lotto Plus 2':[6,52,0],'PowerBall':[5,50,20],'PowerBall Plus':[5,50,20],'Daily Lotto':[5,36,0]};
+function ageNow(){var y=+S.user.idm.slice(0,2),m=+S.user.idm.slice(2,4)-1,d=+S.user.idm.slice(4,6),n=new Date(),yr=y>n.getFullYear()%100?1900+y:2000+y,a=n.getFullYear()-yr;if(n.getMonth()<m||(n.getMonth()===m&&n.getDate()<d))a--;return a}
+function pickNums(n,max){var a=[];while(a.length<n){var x=1+Math.floor(Math.random()*max);if(a.indexOf(x)<0)a.push(x)}return a.sort(function(p,q){return p-q})}
+function genBoards(){var r=LG[lg];boards=[];for(var i=0;i<nb;i++)boards.push({n:pickNums(r[0],r[1]),pb:r[2]?1+Math.floor(Math.random()*r[2]):0})}
+function lgPick(v){lg=v;genBoards();lottoScreen()}
+function nbSet(k){nb=k;genBoards();lottoScreen()}
+function lottoScreen(){
+ var b=$('body');
+ if(ageNow()<18){b.innerHTML='<h2>Lotto</h2><div class="card"><strong>18+ only</strong><small style="letter-spacing:0">Lotto and other lottery games are for adults only.</small></div>';return}
+ var ball=function(x,pb){return '<span style="width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:500;margin:3px;background:'+(pb?'var(--blue)':'var(--tonal)')+';color:'+(pb?'var(--onb)':'var(--tink)')+'">'+x+'</span>'};
+ b.innerHTML='<h2>Lotto</h2><div class="chips">'+Object.keys(LG).map(function(g){return '<button class="chip'+(lg===g?' on':'')+'" onclick="lgPick(this.textContent)">'+g+'</button>'}).join('')+'</div><h2>Boards</h2><div class="chips">'+[1,2,3,4,5].map(function(k){return '<button class="chip'+(nb===k?' on':'')+'" onclick="nbSet('+k+')">'+k+'</button>'}).join('')+'</div>'+boards.map(function(x,i){return '<div class="card"><small style="margin:0 0 6px;letter-spacing:0">Board '+(i+1)+'</small>'+x.n.map(function(v){return ball(v,0)}).join('')+(x.pb?ball(x.pb,1):'')+'</div>'}).join('')+'<button class="btn t" onclick="genBoards();lottoScreen()">Quick pick again</button><p class="note">Example price: R5.00 per board. Real prices come from the lottery operator.</p><button class="btn" onclick="lottoBuy()">Buy tickets · '+money(nb*5)+'</button><p class="note">18+ only. Play responsibly.</p>';
+}
+function lottoBuy(){confirmPay({name:lg+' ('+nb+' board'+(nb>1?'s':'')+')',amount:nb*5,via:'Lotto'})}
+function openTx(i){txk=TXK[i];txo='';txa=0;txr='';if(txk==='lotto'){lg='Lotto';nb=1;genBoards();scr='lotto'}else scr='tx';render()}
+function buy(){
+ var T=[['Airtime','Top up any network','A'],['Data','Data bundles for any network','D'],['Prepaid electricity','Buy units for your meter','E'],['Pay a bill','DStv, municipal and more, with your account number','B'],['Pay@','Pay with your Pay@ reference number','@'],['Lotto','Lotto, PowerBall and Daily Lotto','L']];
+ $('body').innerHTML='<h2>Transact</h2>'+T.map(function(t,i){return '<div class="card" style="display:flex;gap:14px;align-items:center;cursor:pointer" onclick="openTx('+i+')"><span class="wl" style="background:var(--tonal);color:var(--tink)">'+t[2]+'</span><span><strong style="font-size:17px">'+t[0]+'</strong><small style="letter-spacing:0">'+t[1]+'</small></span></div>'}).join('')+'<p class="note">Pay for everyday things straight from your linked card.</p>';
+}
+function txScreen(){
+ var c=TX[txk];
+ $('body').innerHTML='<h2>'+c.t+'</h2>'+(c.opts.length?'<div class="chips">'+c.opts.map(function(o){return '<button class="chip'+(txo===o?' on':'')+'" onclick="txPick(this.textContent)">'+esc(o)+'</button>'}).join('')+'</div>':'')+'<input id="txf" inputmode="numeric" placeholder="'+c.f+'" value="'+esc(txr)+'" oninput="txr=this.value">'+(c.h?'<p class="note">'+c.h+'</p>':'')+'<h2>Amount</h2><input id="txam" inputmode="decimal" placeholder="Type an amount in rand" value="'+(txa||'')+'" oninput="txa=parseFloat(this.value)||0"><p class="note">Or pick a quick amount:</p><div class="chips">'+c.amts.map(function(a){return '<button class="chip'+(txa===a?' on':'')+'" onclick="txSet('+a+')">R'+a+'</button>'}).join('')+'</div><button class="btn" onclick="txBuy()">Buy</button><p class="note">PayWise earns a small commission from the provider. You pay the price shown.</p>';
+}
+function txBuy(){var c=TX[txk];if((c.opts.length&&!txo)||!txr.trim()||!(txa>=1))return toast('Add the '+c.f.toLowerCase()+' and type or pick an amount'+(c.opts.length?', and choose a provider':''));confirmPay({name:(txo?txo+' ':'')+c.t.toLowerCase(),amount:Math.round(txa*100)/100,via:'Transact'})}
+var ab=0,lt='play',pending=null;
+function lgPick(v){lg=v;boards=[{n:[],pb:0}];ab=0;lottoScreen()}
+function openTx(i){txk=TXK[i];txo='';txa=0;txr='';dn='';dc='';ds=-1;dr=S.user.phone.replace('+27','0');if(txk==='lotto'){if(ageNow()<18)return toast('Lotto is for 18+ only');lg='Lotto';boards=[{n:[],pb:0}];ab=0;lt='play';scr='lotto'}else scr='tx';render()}
+function buy(){
+ var T=[['Airtime','Top up any network','A'],['Data','Data bundles for any network','D'],['Prepaid electricity','Buy units for your meter','E'],['Pay a bill','DStv, municipal and more, with your reference number','B'],['Pay@','Pay with your Pay@ reference number','@'],['Lotto','Lotto, PowerBall and Daily Lotto (18+)','L']].filter(function(t){return t[0]!=='Lotto'||ageNow()>=18});
+ $('body').innerHTML='<h2>Transact</h2>'+T.map(function(t,i){return '<div class="card" style="display:flex;gap:14px;align-items:center;cursor:pointer" onclick="openTx('+i+')"><span class="wl" style="background:var(--tonal);color:var(--tink)">'+t[2]+'</span><span><strong style="font-size:17px">'+t[0]+'</strong><small style="letter-spacing:0">'+t[1]+'</small></span></div>'}).join('')+'<p class="note">Pay for everyday things straight from your linked card.</p>';
+}
+function tgl(x){var r=LG[lg],b=boards[ab],i=b.n.indexOf(x);if(i>=0)b.n.splice(i,1);else if(b.n.length<r[0])b.n.push(x);else return toast('Remove a number first');b.n.sort(function(p,q){return p-q});lottoScreen()}
+function tglPb(x){boards[ab].pb=boards[ab].pb===x?0:x;lottoScreen()}
+function addBoard(){if(boards.length>=10)return toast('You can play up to 10 boards');boards.push({n:[],pb:0});ab=boards.length-1;lottoScreen()}
+function selBoard(i){ab=i;lottoScreen()}
+function delBoard(){if(boards.length>1){boards.splice(ab,1);ab=Math.max(0,ab-1)}else boards[0]={n:[],pb:0};lottoScreen()}
+function qp(){var r=LG[lg];boards[ab]={n:pickNums(r[0],r[1]),pb:r[2]?1+Math.floor(Math.random()*r[2]):0};lottoScreen()}
+function clr(){boards[ab]={n:[],pb:0};lottoScreen()}
+function full(b){var r=LG[lg];return b.n.length===r[0]&&(!r[2]||b.pb>0)}
+function ltab(t){lt=t;lottoScreen()}
+function grid(max,sl,fn){var h='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:8px">';for(var i=1;i<=max;i++){var on=Array.isArray(sl)?sl.indexOf(i)>=0:sl===i;h+='<button class="chip'+(on?' on':'')+'" style="padding:9px 0;border-radius:12px;'+(on?'background:var(--blue);color:var(--onb);border-color:var(--blue)':'')+'" onclick="'+fn+'('+i+')">'+i+'</button>'}return h+'</div>'}
+function ball(x,pb){return '<span style="width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:500;margin:3px;background:'+(pb?'var(--blue)':'var(--tonal)')+';color:'+(pb?'var(--onb)':'var(--tink)')+'">'+x+'</span>'}
+function lottoBuy(){
+ for(var i=0;i<boards.length;i++)if(!full(boards[i]))return toast('Finish Board '+(i+1)+' first');
+ var nm=lg+' ('+boards.length+' board'+(boards.length>1?'s':'')+')';
+ pending={name:nm,t:{id:String(Date.now()),g:lg,d:new Date().toLocaleDateString('en-ZA'),cost:boards.length*5,b:JSON.parse(JSON.stringify(boards)),res:null}};
+ confirmPay({name:nm,amount:boards.length*5,via:'Lotto'});
+}
+function pay(who,a,inn){
+ var tk=null;if(pending&&!inn&&who===pending.name){S.tickets=S.tickets||[];S.tickets.unshift(pending.t);tk=pending;pending=null}
+ S.hist.unshift({who:who,a:a,in:inn});save();
+ if(tk){scr='lotto';lt='tix'}else{scr='main';tab='wallet'}
+ render();toast((inn?'Received ':'Paid ')+money(a));
+}
+function simDraw(id){
+ var t=(S.tickets||[]).filter(function(x){return x.id===id})[0];if(!t)return;
+ var r=LG[t.g],w=pickNums(r[0],r[1]),pb=r[2]?1+Math.floor(Math.random()*r[2]):0;
+ t.res={w:w,pb:pb,m:t.b.map(function(x){return{k:x.n.filter(function(v){return w.indexOf(v)>=0}).length,p:!!(r[2]&&x.pb===pb)}})};
+ save();lottoScreen();
+}
+function lottoScreen(){
+ var b=$('body');
+ if(ageNow()<18){scr='main';return render()}
+ var h='<h2>Lotto</h2><div class="chips">'+[['play','Play'],['tix','My tickets'],['rules','Rules']].map(function(t){return '<button class="chip'+(lt===t[0]?' on':'')+'" data-t="'+t[0]+'" onclick="ltab(this.dataset.t)">'+t[1]+'</button>'}).join('')+'</div>';
+ if(lt==='play'){
+  var r=LG[lg],cur=boards[ab];
+  h+='<div class="chips">'+Object.keys(LG).map(function(g){return '<button class="chip'+(lg===g?' on':'')+'" onclick="lgPick(this.textContent)">'+g+'</button>'}).join('')+'</div>';
+  h+='<div class="chips">'+boards.map(function(x,i){return '<button class="chip'+(i===ab?' on':'')+'" onclick="selBoard('+i+')">Board '+(i+1)+(full(x)?' ✓':'')+'</button>'}).join('')+'<button class="chip" onclick="addBoard()">+ Add board</button></div>';
+  h+='<p class="note">Pick '+r[0]+' numbers from 1 to '+r[1]+' ('+cur.n.length+' of '+r[0]+' picked)</p>'+grid(r[1],cur.n,'tgl');
+  if(r[2])h+='<p class="note">Pick your PowerBall from 1 to '+r[2]+'</p>'+grid(r[2],cur.pb,'tglPb');
+  h+='<div style="display:flex;gap:8px"><button class="btn t" onclick="qp()">Quick pick</button><button class="btn g" onclick="clr()">Clear</button><button class="btn g" onclick="delBoard()">Remove</button></div>';
+  h+='<div class="card" style="margin-top:12px"><strong style="font-size:16px">Your boards</strong>'+boards.map(function(x,i){return '<div>'+'<small style="letter-spacing:0;margin:4px 0 0">Board '+(i+1)+'</small>'+(x.n.length?x.n.map(function(v){return ball(v,0)}).join('')+(x.pb?ball(x.pb,1):''):'<span class="note">Nothing picked yet</span>')+'</div>'}).join('')+'</div>';
+  h+='<button class="btn" onclick="lottoBuy()">Buy tickets · '+money(boards.length*5)+'</button><p class="note">Example price: R5.00 per board. Real prices come from the lottery operator. 18+ only. Play responsibly.</p>';
+ }
+ if(lt==='tix'){
+  var tx=S.tickets||[];
+  h+=tx.length?tx.map(function(t){var r=LG[t.g];return '<div class="card"><strong style="font-size:17px">'+esc(t.g)+'</strong><small style="letter-spacing:0">'+esc(t.d)+' · '+money(t.cost)+'</small>'+t.b.map(function(x,i){var m=t.res?t.res.m[i]:null;return '<div style="margin-top:6px">'+x.n.map(function(v){return ball(v,0)}).join('')+(x.pb?ball(x.pb,1):'')+(m?'<div class="note" style="margin:0 4px">Matched '+m.k+' number'+(m.k===1?'':'s')+(r[2]?(m.p?' and the PowerBall':' (no PowerBall)'):'')+'</div>':'')+'</div>'}).join('')+(t.res?'<p class="note">Simulated draw: '+t.res.w.join(', ')+(r[2]?' · PowerBall '+t.res.pb:'')+'</p>':'<button class="btn t" onclick="simDraw(this.dataset.id)" data-id="'+t.id+'">Simulate the draw</button>')+'</div>'}).join(''):'<p class="note">No tickets yet. Buy some on the Play tab and they will show here.</p>';
+ }
+ if(lt==='rules'){
+  h+='<div class="card"><strong style="font-size:17px">How to play</strong><p class="note">Lotto, Lotto Plus 1 and Lotto Plus 2: pick 6 numbers from 1 to 52. The Plus games are extra draws for the same board.</p><p class="note">PowerBall and PowerBall Plus: pick 5 numbers from 1 to 50, plus a PowerBall from 1 to 20.</p><p class="note">Daily Lotto: pick 5 numbers from 1 to 36.</p><p class="note">The more numbers you match, the bigger the prize. You can play up to 10 boards on one ticket.</p></div><div class="card"><strong style="font-size:17px">Good to know</strong><p class="note">You must be 18 or older to play. PayWise checks this from your ID number.</p><p class="note">Prototype: the draws are simulated and the rules are for illustration. The real draw days, prices and prizes come from the lottery operator.</p><p class="note">Only play with money you can afford to lose.</p></div>';
+ }
+ b.innerHTML=h;
+}
+var DC={'Vodacom':['Daily','Weekly','Monthly','Night','Social'],'MTN':['Daily','Weekly','Monthly','Night','Video'],'Telkom':['Daily','Weekly','Monthly','Night'],'Cell C':['Daily','Weekly','Monthly','Social']};
+var DB={Daily:[['100MB','24 hours',5],['250MB','24 hours',10],['1GB','24 hours',19]],Weekly:[['500MB','7 days',29],['1GB','7 days',49],['3GB','7 days',99]],Monthly:[['1GB','30 days',79],['3GB','30 days',129],['5GB','30 days',179],['10GB','30 days',249]],Night:[['2GB','Midnight to 5am, 30 days',49],['5GB','Midnight to 5am, 30 days',99]],Social:[['500MB','Social apps only, 30 days',29],['1.5GB','Social apps only, 30 days',59]],Video:[['1GB','Video apps only, 30 days',39],['3GB','Video apps only, 30 days',89]]};
+var dn='',dc='',ds=-1,dr='';
+function dnPick(v){dn=v;dc=DC[v][0];ds=-1;dataScreen()}
+function dcPick(v){dc=v;ds=-1;dataScreen()}
+function dsPick(i){ds=i;dataScreen()}
+function dataScreen(){
+ var h='<h2>Data</h2><p class="note">Choose a network</p><div class="chips">'+Object.keys(DC).map(function(n){return '<button class="chip'+(dn===n?' on':'')+'" onclick="dnPick(this.textContent)">'+n+'</button>'}).join('')+'</div>';
+ if(dn){
+  h+='<p class="note">Bundle type</p><div class="chips">'+DC[dn].map(function(c){return '<button class="chip'+(dc===c?' on':'')+'" onclick="dcPick(this.textContent)">'+c+'</button>'}).join('')+'</div>';
+  h+='<h2>'+dn+' '+dc+' bundles</h2>'+DB[dc].map(function(b,i){return '<div class="card" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;'+(ds===i?'border-color:var(--blue);background:var(--tonal)':'')+'" onclick="dsPick('+i+')"><span><strong style="font-size:20px">'+b[0]+'</strong><small style="letter-spacing:0">'+b[1]+'</small></span><b style="font-size:18px">R'+b[2]+'</b></div>'}).join('');
+  h+='<input id="dnum" inputmode="numeric" placeholder="Cell number to top up" value="'+esc(dr)+'" oninput="dr=this.value"><button class="btn" onclick="dataBuy()">Buy</button>';
+ }else h+='<p class="note">Pick a network to see its data bundles, sizes and prices.</p>';
+ h+='<p class="note">Example bundles and prices. In the live app, each network’s real bundles and prices load automatically.</p>';
+ $('body').innerHTML=h;
+}
+function dataBuy(){if(!dn||ds<0)return toast('Pick a network and a bundle');if(!dr.trim())return toast('Add the cell number');var b=DB[dc][ds];confirmPay({name:dn+' '+b[0]+' '+dc.toLowerCase()+' data',amount:b[2],via:'Transact'})}
+(function(){var st=document.createElement('style');st.textContent='.lock{position:fixed;inset:0;background:var(--bg);z-index:50;overflow-y:auto}.lock>div{max-width:480px;margin:0 auto;padding:40px 24px;text-align:center}.lock .logo{margin:0 auto}.dots2{display:flex;justify-content:center;gap:14px;margin:18px 0 6px}.dots2 i{width:14px;height:14px;border-radius:50%;border:2px solid var(--blue)}.dots2 i.on{background:var(--blue)}.pad2{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:300px;margin:12px auto 0}.pad2 button{height:62px;border-radius:31px;border:1px solid var(--line);background:var(--sf);color:var(--ink);font:500 24px inherit;font-family:inherit}';document.head.appendChild(st)})();
+var locked=!!(S.user&&S.pin),pinBuf='',pinTmp='',pinCb=null,pinMode='',pinTitle='',pinSub='',tries=0;
+function sha(t){if(!(window.crypto&&crypto.subtle))return Promise.resolve('x'+t.split('').reduce(function(a,c){return (a*31+c.charCodeAt(0))|0},7));return crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')})}
+function bioAvail(){return !!(window.PublicKeyCredential&&navigator.credentials&&window.crypto)}
+function b64(b){return btoa(String.fromCharCode.apply(null,new Uint8Array(b)))}
+function ub64(s){return Uint8Array.from(atob(s),function(c){return c.charCodeAt(0)})}
+function rnd(n){return crypto.getRandomValues(new Uint8Array(n))}
+function enableBio(){
+ if(!bioAvail())return toast('Fingerprint is not available on this phone or browser');
+ navigator.credentials.create({publicKey:{challenge:rnd(32),rp:{name:'PayWise'},user:{id:rnd(16),name:S.user.phone,displayName:S.user.name},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required'},timeout:60000}}).then(function(c){S.bio=b64(c.rawId);save();toast('Fingerprint turned on');render()}).catch(function(){toast('Could not turn on fingerprint')});
+}
+function bioCheck(ok,fail){navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{type:'public-key',id:ub64(S.bio)}],userVerification:'required',timeout:60000}}).then(ok).catch(fail)}
+function closeLock(){var o=$('lock');if(o)o.remove()}
+function showPin(title,sub,cancel){
+ pinTitle=title;pinSub=sub;
+ var o=$('lock');if(!o){o=document.createElement('div');o.id='lock';o.className='lock';document.body.appendChild(o)}
+ var keys=[1,2,3,4,5,6,7,8,9,'',0,'b'];
+ o.innerHTML='<div><div class="logo">P</div><h1>'+title+'</h1><p class="note">'+sub+'</p><div class="dots2">'+[0,1,2,3].map(function(i){return '<i class="'+(i<pinBuf.length?'on':'')+'"></i>'}).join('')+'</div><p class="err" id="perr"></p><div class="pad2">'+keys.map(function(k){return k===''?'<span></span>':'<button data-k="'+k+'" onclick="pk(this.dataset.k)">'+(k==='b'?'\u232b':k)+'</button>'}).join('')+'</div>'+(S.bio&&bioAvail()&&pinMode!=='new1'&&pinMode!=='new2'?'<button class="btn t" style="max-width:300px;margin:16px auto 0" onclick="pinBio()">Use fingerprint</button>':'')+(cancel?'<button class="btn g" style="max-width:300px;margin:8px auto 0" onclick="pinCancel()">Cancel</button>':'')+'</div>';
+}
+function pk(d){
+ if(d==='b')pinBuf=pinBuf.slice(0,-1);else if(pinBuf.length<4)pinBuf+=d;
+ var ds=document.querySelectorAll('.dots2 i');for(var i=0;i<ds.length;i++)ds[i].className=i<pinBuf.length?'on':'';
+ if(pinBuf.length===4)setTimeout(pinDone,120);
+}
+function pinOk(){var cb=pinCb,md=pinMode;pinCb=null;pinMode='';pinBuf='';tries=0;closeLock();if(md==='unlock'){locked=false;render()}else if(cb)cb()}
+function pinBio(){if(!S.bio)return;bioCheck(pinOk,function(){var e=$('perr');if(e)e.textContent='Fingerprint did not work. Use your PIN.'})}
+function pinCancel(){pinMode='';pinCb=null;pinBuf='';closeLock()}
+function pinDone(){
+ if(pinMode==='new1'){pinTmp=pinBuf;pinBuf='';pinMode='new2';return showPin('Confirm your PIN','Enter the same PIN again')}
+ if(pinMode==='new2'){
+  if(pinBuf!==pinTmp){pinBuf='';pinMode='new1';return showPin('Create your PIN','The PINs did not match. Try again.')}
+  var salt=Math.random().toString(36).slice(2);
+  return sha(salt+pinBuf).then(function(h){S.pin={s:salt,h:h};save();pinBuf='';pinTmp='';pinMode='';locked=false;closeLock();render();offerBio();toast('PIN saved')});
+ }
+ sha(S.pin.s+pinBuf).then(function(h){
+  if(h===S.pin.h)return pinOk();
+  tries++;pinBuf='';
+  if(tries>=5){pinMode='';closeLock();toast('Too many wrong PINs. Please log in again.');return signOut()}
+  showPin(pinTitle,pinSub,pinMode==='confirm');var e=$('perr');if(e)e.textContent='Wrong PIN. '+(5-tries)+' tries left';
+ });
+}
+function startSetup(){pinMode='new1';pinBuf='';showPin('Create your PIN','Choose a 4-digit PIN to protect PayWise')}
+function startUnlock(){pinMode='unlock';pinBuf='';showPin('Welcome back','Enter your PIN to open PayWise');if(S.bio&&bioAvail())setTimeout(pinBio,300)}
+function askAuth(title,sub,cb){if(!S.pin){cb();return}pinCb=cb;pinMode='confirm';pinBuf='';showPin(title,sub,true)}
+function offerBio(){
+ if(!bioAvail()||S.bio)return;
+ var sh=document.createElement('div');sh.className='sheet';sh.style.zIndex=60;
+ sh.innerHTML='<strong style="font-size:20px">Use your fingerprint too?</strong><p class="note">Open PayWise and confirm payments with your fingerprint instead of typing your PIN.</p><button class="btn" id="bo1">Turn on fingerprint</button><button class="btn g" id="bo2">Not now</button>';
+ $('app').appendChild(sh);$('bo1').onclick=function(){sh.remove();enableBio()};$('bo2').onclick=function(){sh.remove()};
+}
+function gate(){if(!S.user){closeLock();return}if($('lock'))return;if(!S.pin)startSetup();else if(locked)startUnlock()}
+function render(){stopCam();S.user?shell():auth();gate()}
+document.addEventListener('visibilitychange',function(){if(document.hidden){if(S.pin)locked=true}else gate()});
+function changePin(){askAuth('Confirm your PIN','Enter your current PIN',function(){pinMode='new1';pinBuf='';showPin('Create a new PIN','Choose a new 4-digit PIN')})}
+function toggleBio(){if(S.bio){S.bio=null;save();toast('Fingerprint turned off');render()}else enableBio()}
+function profile(){
+ var u=S.user,av=u.photo?'<img class="av avxl" src="'+u.photo+'" alt="Profile photo">':'<span class="av avxl">'+esc(u.name[0].toUpperCase())+'</span>';
+ var rows=[['Name',u.name+' '+u.surname],['Cell number',u.phone],['Email',u.email],['ID number',u.idm],['Bank card',S.bank?S.bank.name+' •••• '+S.bank.l4:'Not linked'],['Payout account',S.payout?S.payout.bank+' •••• '+S.payout.l4:'Not linked']];
+ $('body').innerHTML='<div style="display:flex;flex-direction:column;align-items:center"><label style="cursor:pointer">'+av+'<input id="ph" type="file" accept="image/*" style="display:none" onchange="setPhoto(this)"></label><p class="note">Tap the photo to change it</p></div>'+rows.map(function(r){return '<div class="row"><span style="color:var(--mute)">'+r[0]+'</span><span>'+esc(r[1])+'</span></div>'}).join('')+'<h2>Security</h2><button class="btn t" onclick="changePin()">Change PIN</button>'+(bioAvail()?'<button class="btn t" onclick="toggleBio()">'+(S.bio?'Turn off fingerprint':'Turn on fingerprint')+'</button>':'')+'<button class="btn t" onclick="signOut()" style="margin-top:20px">Sign out</button>';
+}
+function confirmPay(m){
+ if(!S.bank){toast('Link your bank card first');return openBank()}
+ var sh=document.createElement('div');sh.className='sheet';
+ sh.innerHTML='<p class="note">Paying</p><strong style="font-size:22px">'+esc(m.name)+'</strong>'+(m.amount?'<div class="big">'+money(m.amount)+'</div>':'<input id="pa" inputmode="decimal" placeholder="Amount (R)" style="margin-top:12px">')+'<p class="note">From '+esc(S.bank.name)+' •••• '+esc(S.bank.l4)+(m.via?' · '+m.via:'')+'. You confirm with your PIN or fingerprint.</p><button class="btn" id="pb">Pay</button><button class="btn g" id="pc">Cancel</button>';
+ $('app').appendChild(sh);
+ $('pb').onclick=function(){var a=m.amount||parseFloat($('pa').value);if(!(a>0))return toast('Enter an amount');askAuth('Confirm payment','Pay '+money(a)+' to '+esc(m.name),function(){sh.innerHTML='<div class="ok" style="font-size:22px;margin:16px 0">✓ Paid '+money(a)+'</div><p class="note">Sent straight from your card to '+esc(m.name)+'.</p><button class="btn" id="pd">Done</button>';$('pd').onclick=function(){sh.remove();pay(m.name,a,false)}})};
+ $('pc').onclick=function(){sh.remove();render()};
+}
+var lastBad=0,dsI=0;
+function badQR(m){if(Date.now()-lastBad>3000){lastBad=Date.now();toast(m)}}
+function has(h,a){return a.some(function(x){return h.indexOf(x)>=0})}
+function schemeOf(t){for(var k=26;k<=51;k++){var v=t[String(k)];if(v){var g=(parseTLV(v)['00']||'').toLowerCase();if(has(g,['paywise']))return 'PayWise';if(has(g,['snapscan']))return 'SnapScan';if(has(g,['zapper']))return 'Zapper';if(has(g,['payshap','payinc']))return 'PayShap'}}return 'QR payment'}
+function readQR(d){
+ d=String(d).trim();
+ if(d.indexOf('000201')===0){
+  if(crc16(d.slice(0,-4))!==d.slice(-4)){badQR('This QR code looks damaged. Try again.');return null}
+  var t=parseTLV(d);return{name:t['59']||'Merchant',amount:t['54']?parseFloat(t['54']):null,via:schemeOf(t)};
+ }
+ if(/^https?:/i.test(d)){var h=(d.split('/')[2]||'').toLowerCase(),sc=has(h,['snapscan'])?'SnapScan':has(h,['zapper','zap.pe'])?'Zapper':has(h,['payat'])?'Pay@':has(h,['payshap'])?'PayShap':null;if(sc)return{name:sc+' merchant',amount:null,via:sc+' link'}}
+ badQR('This QR code is not a payment code.');return null;
+}
+function demoScan(){stopCam();var k=dsI++%3;if(k===0)return confirmPay({name:'Mama Thandi Vetkoek',amount:35,via:'PayWise'});if(k===1)return confirmPay(readQR('https://www.zapper.com/pay/demo'));return confirmPay(readQR('https://pay.snapscan.io/qr/demo'))}
+function simTapIn(){var a=parseFloat($('am').value)||62.5,fee=Math.round(Math.max(0.5,a*0.01)*100)/100,net=a-fee;S.hist.unshift({who:'Card tap (R'+a.toFixed(2)+' less R'+fee.toFixed(2)+' fee)',a:net,in:true});save();tab='wallet';render();toast('Tap accepted: '+money(net)+' on its way to your bank')}
+var UI='google';try{UI=localStorage.getItem('pwui')||'google'}catch(e){}
+function applyUI(){document.documentElement.setAttribute('data-ui',UI);var b=$('uisw');if(b)b.textContent=UI==='apple'?'Switch to Google look':'Switch to Apple look'}
+function togUI(){UI=UI==='apple'?'google':'apple';try{localStorage.setItem('pwui',UI)}catch(e){}applyUI()}
+(function(){
+ var st=document.createElement('style');
+ st.textContent='html[data-ui=apple]{--bg:#F2F2F7;--sf:#fff;--ink:#000;--mute:#8E8E93;--blue:#007AFF;--tonal:rgba(0,122,255,.12);--tink:#007AFF;--ok:#34C759;--line:#D1D1D6;--onb:#fff}html[data-ui=apple] body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Inter,Roboto,Arial,sans-serif}html[data-ui=apple] .title{font-size:34px;font-weight:700;letter-spacing:.3px}html[data-ui=apple] h2{font-size:13px;text-transform:uppercase;letter-spacing:.4px;font-weight:400;color:var(--mute);margin:24px 16px 8px}html[data-ui=apple] h1{font-weight:700}html[data-ui=apple] .btn{border-radius:14px;font-weight:600;font-size:17px}html[data-ui=apple] nav{background:rgba(249,249,249,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:.5px solid var(--line);padding:6px 4px;gap:0}html[data-ui=apple] nav button{border-radius:0;background:none!important;font-size:11px;font-weight:500;color:#8E8E93;padding:10px 0}html[data-ui=apple] nav button.on{color:var(--blue)}html[data-ui=apple] .card{border:0;border-radius:14px}html[data-ui=apple] .card.bank{background:linear-gradient(135deg,#1c1c1e 0%,#48484a 100%);color:#fff}html[data-ui=apple] .wc{border-radius:16px}html[data-ui=apple] input{border:0;border-radius:12px}html[data-ui=apple] .row{background:var(--sf);border-bottom:.5px solid var(--line);padding:13px 16px}html[data-ui=apple] .chip{border:0;border-radius:10px;background:var(--sf)}html[data-ui=apple] .chip.on{background:var(--blue);color:#fff}html[data-ui=apple] .sheet{border-radius:14px 14px 0 0}html[data-ui=apple] .av{background:#8E8E93}html[data-ui=apple] .logo{background:#000;border-radius:18px}html[data-ui=apple] .qr{border:0}';
+ document.head.appendChild(st);
+ var b=document.createElement('button');b.id='uisw';b.onclick=togUI;
+ b.style.cssText='position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);right:max(72px,calc(50vw - 168px));z-index:40;border:0;border-radius:100px;padding:7px 12px;background:var(--tonal);color:var(--tink);font:500 12px inherit;font-family:inherit;cursor:pointer';
+ document.body.appendChild(b);applyUI();
+})();
+COL['Shoprite']='#E2231A';COL['Pick n Pay']='#0B63C5';COL['Checkers']='#009B8D';COL['Clicks']='#0A8F4E';COL['Woolworths']='#111111';COL['Spar']='#0B7A3B';
+(function(){
+ var st=document.createElement('style');
+ st.textContent='.wc .wt{display:flex;justify-content:flex-end}.wk{display:inline-flex;align-items:center;gap:8px;max-width:100%;font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wk i{font-style:normal;flex:none;width:28px;height:28px;border-radius:8px;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:16px}.wn{font-variant-numeric:tabular-nums}.bcard{aspect-ratio:1.586;max-height:210px;border-radius:20px;padding:20px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;margin-bottom:12px;box-shadow:0 8px 20px rgba(0,0,0,.22);cursor:pointer;position:relative;overflow:hidden}.bcard::after{content:"";position:absolute;right:-40px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.08)}.bt{display:flex;justify-content:space-between;align-items:center}.chip2{width:42px;height:32px;border-radius:7px;background:linear-gradient(135deg,#f5d77a,#c9a227)}.ctl{font-size:22px;letter-spacing:-2px;opacity:.9;transform:rotate(90deg)}.bn{font-size:20px;letter-spacing:2px;font-variant-numeric:tabular-nums}.bb{display:flex;justify-content:space-between;align-items:flex-end;font-size:13px;letter-spacing:1px}.mc{display:inline-flex}.mc i{width:30px;height:30px;border-radius:50%;display:block}.mc i+i{margin-left:-12px;opacity:.9}.bcard.empty{background:var(--sf)!important;color:var(--ink);border:2px dashed var(--line);align-items:center;justify-content:center;text-align:center;box-shadow:none}html[data-ui=bold]{--ink:#000;--blue:#0A5BFF;--tink:#0A4FD6;--tonal:#E3ECFF;--mute:#4A4D52}html[data-ui=bold] body{font-weight:500}html[data-ui=bold] .title{font-size:30px;font-weight:900;letter-spacing:-.6px}html[data-ui=bold] h1{font-weight:900;letter-spacing:-.5px}html[data-ui=bold] h2{font-size:19px;font-weight:800;color:var(--ink);margin:22px 4px 10px}html[data-ui=bold] .btn{font-weight:700;font-size:16px;padding:16px}html[data-ui=bold] nav button{font-weight:700}html[data-ui=bold] strong,html[data-ui=bold] b{font-weight:800}html[data-ui=bold] .card{border:0;box-shadow:0 2px 12px rgba(0,0,0,.09)}html[data-ui=bold] .wc{border-radius:24px}html[data-ui=bold] .chip{font-weight:600}';
+ document.head.appendChild(st);
+})();
+function cardHTML(c,i,sm){var col=colFor(c.store);return '<div class="wc'+(sm?' sm':'')+'" style="background:'+col+'"'+(sm?' onclick="openCard('+i+')"':'')+'><div class="wt"><span class="wk"><i style="color:'+col+'">'+esc(c.store[0])+'</i>'+esc(c.store)+'</span></div><span class="wn">'+esc(c.num)+'</span></div>'}
+function bankCardHTML(){
+ var b=S.bank,v=b.name==='Visa',m=b.name==='Mastercard';
+ var bg=v?'linear-gradient(135deg,#1a1f71,#2f49d1)':m?'linear-gradient(135deg,#1c1c1e,#4a4a4f)':'linear-gradient(135deg,#202124,#5f6368)';
+ var lg2=v?'<em style="font-style:italic;font-weight:900;font-size:24px;letter-spacing:-1px">VISA</em>':m?'<span class="mc"><i style="background:#EB001B"></i><i style="background:#F79E1B"></i></span>':'<b>CARD</b>';
+ return '<div class="bcard" onclick="openBank()" style="background:'+bg+'"><div class="bt"><span class="chip2"></span><span class="ctl">)))</span></div><div class="bn">•••• •••• •••• '+esc(b.l4)+'</div><div class="bb"><span>'+esc((b.holder||'').toUpperCase())+'</span>'+lg2+'</div></div>';
+}
+function wallet(){
+ var bk=S.bank?bankCardHTML():'<div class="bcard empty" onclick="openBank()"><strong style="font-size:18px">Link your bank card</strong><small style="margin-top:6px;color:var(--mute)">Add your card once, then pay with one tap</small></div>';
+ $('body').innerHTML='<h2>Bank cards</h2>'+bk+'<h2>Loyalty cards</h2>'+(S.cards.length?S.cards.map(function(c,i){return cardHTML(c,i,1)}).join(''):'<p class="note">No loyalty cards yet.</p>')+'<button class="btn t" onclick="openAdd()">+ Add loyalty card</button><h2>Recent activity</h2>'+(S.hist.length?S.hist.map(function(h){return '<div class="row"><span>'+(h.in?'From ':'To ')+esc(h.who)+'</span><b style="color:'+(h.in?'var(--ok)':'inherit')+'">'+(h.in?'+':'-')+money(h.a)+'</b></div>'}).join(''):'<p class="note">No payments yet.</p>');
+}
+try{UI=localStorage.getItem('pwui2')||'bold'}catch(e){UI='bold'}
+function applyUI(){document.documentElement.setAttribute('data-ui',UI);var b=$('uisw');if(b)b.textContent=UI==='bold'?'Switch to classic look':'Switch to bold look'}
+function togUI(){UI=UI==='bold'?'google':'bold';try{localStorage.setItem('pwui2',UI)}catch(e){}applyUI()}
+function applyUI(){document.documentElement.setAttribute('data-ui','bold')}
+function togUI(){}
+try{localStorage.removeItem('pwui');localStorage.removeItem('pwui2')}catch(e){}
+(function(){var b=$('uisw');if(b)b.remove()})();
+applyUI();
+(function(){
+ var st=document.createElement('style');
+ st.textContent='.splash{position:fixed;inset:0;z-index:70;background:var(--bg);display:flex;align-items:center;justify-content:center;animation:spFade 3.3s forwards}.sp{width:170px;height:170px;perspective:800px}.spi{position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:spFlip 2.6s ease-in-out forwards}.spf,.spb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden}.spf{font-size:38px;font-weight:900;letter-spacing:-1px;color:#000}.spf b{color:#0A5BFF;font-weight:900}.spb{transform:rotateY(180deg);background:#0A5BFF;border-radius:44px;color:#fff;font-size:110px;font-weight:900}@keyframes spFlip{0%,38%{transform:rotateY(0)}68%,100%{transform:rotateY(180deg)}}@keyframes spFade{0%,86%{opacity:1}100%{opacity:0}}@media (prefers-reduced-motion:reduce){.spi{animation:none;transform:rotateY(180deg)}}';
+ document.head.appendChild(st);
+ var d=document.createElement('div');d.className='splash';d.innerHTML='<div class="sp"><div class="spi"><div class="spf">Pay<b>Wise</b></div><div class="spb">P</div></div></div>';
+ document.body.appendChild(d);setTimeout(function(){d.remove()},3350);
+})();
+render();
+</script>
+<script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}</script>
+</body>
+</html>
